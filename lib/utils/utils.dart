@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(text),
+      backgroundColor: Color.fromARGB(255, 207, 118, 148),
     ),
   );
 }
@@ -20,12 +22,34 @@ Future<List<File>> pickImages() async {
       type: FileType.image,
       allowMultiple: true,
     );
-    log('Jellooo');
 
     if (files != null && files.files.isNotEmpty) {
       for (var i = 0; i < files.files.length; i++) {
         images.add(File(files.files[i].path!));
       }
+    }
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+
+  return images;
+}
+
+Future<List<File>> takeImage(ImageSource source) async {
+  List<File> images = [];
+
+  final ImagePicker imagePicker = ImagePicker();
+
+  try {
+    XFile? file = await imagePicker.pickImage(
+      source: source,
+      imageQuality: 80,
+      maxWidth: 800,
+      maxHeight: 600,
+    );
+
+    if (file != null) {
+      images.add(File(file.path));
     }
   } catch (e) {
     debugPrint(e.toString());

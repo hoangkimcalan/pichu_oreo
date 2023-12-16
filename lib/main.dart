@@ -56,9 +56,12 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: (settings) => generateRoute(settings),
       home: Provider.of<UserProvider>(context).user.roles.isNotEmpty
           ? Provider.of<UserProvider>(context).user.roles.contains('ROLE_USER')
-              ? const IntroScreen()
+              ? const ResponsiveLayout(
+                  mobileScreenLayout: MobilecreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                )
               : const AdminScreen()
-          : const LoginScreen(),
+          : const IntroScreen(),
     );
   }
 }

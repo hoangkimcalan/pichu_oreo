@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pichu_oreo/auth/screens/login_screen.dart';
 import 'package:pichu_oreo/auth/services/register_service.dart';
 import 'package:pichu_oreo/common_widgets/text_field_input.dart';
@@ -52,17 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment(0.8, 1),
-          colors: <Color>[
-            Color(0xffECE9E6),
-            Color(0xffFFFFFF),
-          ], // Gradient from https://learnui.design/tools/gradient-generator.html
-          tileMode: TileMode.mirror,
-        ),
-      ),
+      color: const Color(0xFFFDF6F7),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -75,14 +66,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Flexible(flex: 2, child: Container()),
-                  Image.asset(
-                    'assets/images/logo.jpg',
+                  SvgPicture.asset(
+                    'assets/images/logo-main.svg',
                     width: 400,
-                    height: 200,
+                    height: 150,
                   ),
                   const Text(
-                    'Trading Together, Soaring Forever',
+                    'Begin Your Journey! Sign Up 🌟',
                     style: TextStyle(
                       fontSize: 18,
                       fontStyle: FontStyle.italic,
@@ -114,31 +104,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   InkWell(
                     onTap: registerUser,
                     child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: const ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
+                      width: 380,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(0.8, 1),
+                          colors: <Color>[
+                            Color(0xff9796f0),
+                            Color.fromARGB(255, 251, 159, 182),
+                          ],
+                          tileMode: TileMode.mirror,
                         ),
-                        color: blueColor,
+                        borderRadius: BorderRadius.circular(50.0),
                       ),
-                      child: _isLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                color: secondaryColor,
-                              ),
-                            )
-                          : const Text(
-                              'Register',
-                              style: TextStyle(
-                                color: mobileBackgroundColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
                             ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),

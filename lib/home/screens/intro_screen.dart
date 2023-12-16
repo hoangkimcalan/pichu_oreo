@@ -69,15 +69,15 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
             ),
             Image.asset(
-              'assets/images/bg.jpg',
-              height: 320,
+              'assets/images/image 3.jpg',
+              height: 400,
               fit: BoxFit.contain, // Adjust the fit based on your needs
             ),
             GestureDetector(
               onTap: navigateToLogin,
               child: Container(
-                width: 300,
-                height: 70,
+                width: 280,
+                height: 55,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.topLeft,
