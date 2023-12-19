@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pichu_oreo/home/services/post_service.dart';
+import 'package:pichu_oreo/home/widgets/post_card.dart';
 import 'package:pichu_oreo/utils/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:pichu_oreo/providers/user_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -17,9 +17,9 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   final PostServices postServices = PostServices();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   int _currentPage = 0;
-  List<Map<String, dynamic>> _postList = [];
+  final List<Map<String, dynamic>> _postList = [];
 
   Future<void> fetchData() async {
     try {
@@ -39,7 +39,6 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchData();
     _scrollController.addListener(_scrollListener);
@@ -49,6 +48,13 @@ class _FeedScreenState extends State<FeedScreen> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    fetchData();
   }
 
   void _scrollListener() {
@@ -83,12 +89,13 @@ class _FeedScreenState extends State<FeedScreen> {
         itemBuilder: (context, index) {
           if (index < _postList.length) {
             Map<String, dynamic> itemPost = _postList[index];
-            return ListTile(
-              title: Text(itemPost['content']),
-            );
+            return PostCard(snap: itemPost);
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
         },

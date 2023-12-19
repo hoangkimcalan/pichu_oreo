@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -56,4 +57,10 @@ Future<List<File>> takeImage(ImageSource source) async {
   }
 
   return images;
+}
+
+String getFormattedTime(String time) {
+  DateTime isoDate = DateTime.parse(time);
+  String formattedDate = DateFormat('MMM d, y').format(isoDate);
+  return formattedDate;
 }

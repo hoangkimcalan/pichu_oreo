@@ -15,7 +15,7 @@ class User {
   final String workpalace;
   final String avatar;
   final String background;
-  final String recipientToken;
+  late String recipientToken;
   final List<String> friendList;
   final List<String> roles;
   final int resetPwToken;

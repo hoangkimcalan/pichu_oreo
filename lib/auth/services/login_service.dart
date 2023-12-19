@@ -106,6 +106,8 @@ class LoginService {
           "username": ecodeValue['username'],
           "email": ecodeValue['email'],
           "roles": ecodeValue['roles'],
+          "avatar":
+              "https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png"
         };
 
         String userDataJson = json.encode(userData);
