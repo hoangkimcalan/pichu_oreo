@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:pichu_oreo/common_widgets/like_animation.dart';
+import 'package:pichu_oreo/home/screens/comment_screen.dart';
+import 'package:pichu_oreo/home/services/react_service.dart';
 import 'package:pichu_oreo/providers/user_provider.dart';
-import 'package:pichu_oreo/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/utils.dart';
@@ -20,10 +22,34 @@ class _PostCardState extends State<PostCard> {
   int _current = 0;
   bool showFullText = false;
   final CarouselController _controller = CarouselController();
+  final ReactService reactService = ReactService();
+  late bool isLikePost;
+  late int likeCount;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+    @override
+    void initState() {
+      super.initState();
+      isLikePost = widget.snap['hasReacted'];
+      likeCount = widget.snap['likeCount'];
+    }
+
+    Future<void> likePost() async {
+      try {
+        log("Like post...");
+        await reactService.createReact(
+          context: context,
+          postId: widget.snap['postId'],
+          referenceId: widget.snap['postId'],
+          status: widget.snap['hasReacted'] ? 0 : 1,
+          type: "LIKE",
+        );
+      } catch (e) {
+        log('Error fetching data: $e');
+      }
+    }
 
     return Column(
       children: [
@@ -188,34 +214,49 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: SizedBox(
-                          child: !widget.snap['hasReacted']
+                      LikeAnimation(
+                        isAnimating: isLikePost,
+                        child: IconButton(
+                          onPressed: () {
+                            likePost();
+                            setState(() {
+                              isLikePost = !isLikePost;
+                              log("isReact $isLikePost");
+                            });
+                          },
+                          icon: !isLikePost
                               ? const Icon(
-                                  Icons.favorite_outline,
+                                  Icons.favorite_border_outlined,
                                   color: Color(0xFF8d9096),
                                   size: 32,
                                 )
                               : const Icon(
-                                  Icons.favorite,
+                                  Icons.favorite_outlined,
                                   color: Colors.redAccent,
                                   size: 32,
                                 ),
                         ),
                       ),
-                      const SizedBox(width: 6),
                       Text(
                         widget.snap['likeCounts'].toString(),
                         style: const TextStyle(
                           color: Color(0xFF8d9096),
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(width: 20),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              // Return the dialog widget
+                              return CommentScreen(snap: widget.snap);
+                            },
+                          );
+                        },
                         child: const SizedBox(
                           child: Icon(
                             Icons.comment_outlined,

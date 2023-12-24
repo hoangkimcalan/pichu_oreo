@@ -15,14 +15,16 @@ class FeedScreen extends StatefulWidget {
   State<FeedScreen> createState() => _FeedScreenState();
 }
 
-class _FeedScreenState extends State<FeedScreen> {
+class _FeedScreenState extends State<FeedScreen>
+    with AutomaticKeepAliveClientMixin {
   final PostServices postServices = PostServices();
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 0;
-  final List<Map<String, dynamic>> _postList = [];
+  List<Map<String, dynamic>> _postList = [];
 
   Future<void> fetchData() async {
     try {
+      log("Fetching post...");
       List<Map<String, dynamic>> newData =
           await postServices.getAllPosts(context: context, page: _currentPage);
       if (newData.isEmpty) {
@@ -30,6 +32,25 @@ class _FeedScreenState extends State<FeedScreen> {
       }
       _currentPage++;
       setState(() {
+        _postList.addAll(newData);
+      });
+      log("data new here");
+    } catch (e) {
+      log('Error fetching data: $e');
+    }
+  }
+
+  Future<void> refreshData() async {
+    try {
+      log("Fetching data...");
+      List<Map<String, dynamic>> newData =
+          await postServices.getAllPosts(context: context, page: 0);
+      if (newData.isEmpty) {
+        return;
+      }
+      _currentPage++;
+      setState(() {
+        _postList = [];
         _postList.addAll(newData);
       });
     } catch (e) {
@@ -50,13 +71,6 @@ class _FeedScreenState extends State<FeedScreen> {
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    fetchData();
-  }
-
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
@@ -66,6 +80,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
@@ -83,23 +98,32 @@ class _FeedScreenState extends State<FeedScreen> {
           )
         ],
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: _postList.length + 1,
-        itemBuilder: (context, index) {
-          if (index < _postList.length) {
-            Map<String, dynamic> itemPost = _postList[index];
-            return PostCard(snap: itemPost);
-          } else {
-            return const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await refreshData();
         },
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: _postList.length + 1,
+          itemBuilder: (context, index) {
+            if (index < _postList.length) {
+              Map<String, dynamic> itemPost = _postList[index];
+              return PostCard(snap: itemPost);
+            } else {
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

@@ -1,9 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pichu_oreo/admin/screens/admin_screen.dart';
-import 'package:pichu_oreo/auth/screens/login_screen.dart';
 import 'package:pichu_oreo/auth/services/login_service.dart';
 import 'package:pichu_oreo/home/screens/intro_screen.dart';
 import 'package:pichu_oreo/providers/user_provider.dart';
+import 'package:pichu_oreo/resources/firestore_methods.dart';
 import 'package:pichu_oreo/responsive/mobile_screen_layout.dart';
 import 'package:pichu_oreo/responsive/responsive_layout_screen.dart';
 import 'package:pichu_oreo/responsive/web_screen_layout.dart';
@@ -11,7 +12,9 @@ import 'package:pichu_oreo/routes.dart';
 import 'package:pichu_oreo/utils/colors.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
@@ -35,6 +38,7 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     loginService.getUserData(context);
     super.initState();
+    FirebaseMethods().getFirebaseMessagingToken();
   }
 
   @override

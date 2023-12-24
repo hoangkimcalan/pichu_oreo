@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "203207023100",
+    "project_id": "pichu-or",
+    "storage_bucket": "pichu-or.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203207023100:android:e21f522cbe9878ad607a79",
+        "android_client_info": {
+          "package_name": "com.example.pichu_oreo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgFNfK8w3gZsvWAolvlLgyWYofJPKiNfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

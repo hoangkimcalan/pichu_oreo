@@ -64,3 +64,9 @@ String getFormattedTime(String time) {
   String formattedDate = DateFormat('MMM d, y').format(isoDate);
   return formattedDate;
 }
+
+String getFormattedTimeCmt(String time) {
+  DateTime isoDate = DateTime.parse(time);
+  String formattedDate = DateFormat('MMM d').format(isoDate);
+  return formattedDate;
+}

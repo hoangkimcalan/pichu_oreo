@@ -4,22 +4,21 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:pichu_oreo/common_widgets/error_handling.dart';
-import 'package:pichu_oreo/responsive/responsive_layout_screen.dart';
 import 'package:pichu_oreo/utils/global_variables.dart';
 import 'package:pichu_oreo/utils/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-class PostServices {
-  Future<void> createPost({
+class CommentServices {
+  Future<void> createComment({
     required BuildContext context,
     required String userId,
-    String? description,
-    required String status,
+    String? content,
+    required String postId,
+    required String referenceId,
     List<File>? images,
   }) async {
     try {
@@ -37,31 +36,20 @@ class PostServices {
       }
 
       Map<String, dynamic> requestData = {
-        "content": description,
+        "content": "content",
         "images": imageUrls,
-        "status": status,
+        "postId": postId,
+        "referenceId": referenceId,
       };
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('authorization');
 
       http.Response res = await http.post(
-        Uri.parse('$uri/api/func/post/createPost'),
+        Uri.parse('$uri/api/func/comment/createComment'),
         body: jsonEncode(requestData),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${token!}'
-        },
-      );
-
-      httpErrorHandle(
-        response: res,
-        context: context,
-        onSuccess: () {
-          showSnackBar(context, 'Create post successfully!');
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            ResponsiveLayout.routeName,
-            (route) => false,
-          );
         },
       );
     } catch (e) {
@@ -69,9 +57,11 @@ class PostServices {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAllPosts(
-      {required BuildContext context, required int page}) async {
-    List<Map<String, dynamic>> postList = [];
+  Future<List<Map<String, dynamic>>> getCommentParent(
+      {required BuildContext context,
+      required int page,
+      required String postId}) async {
+    List<Map<String, dynamic>> commentList = [];
 
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,10 +69,11 @@ class PostServices {
 
       Map<String, dynamic> requestData = {
         "page": page,
+        "postId": postId,
       };
 
       http.Response res = await http.post(
-        Uri.parse('$uri/api/func/post/getAllPosts'),
+        Uri.parse('$uri/api/func/comment/getCommentParent'),
         body: jsonEncode(requestData),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -94,14 +85,12 @@ class PostServices {
       List<Map<String, dynamic>> ecodeValue =
           List<Map<String, dynamic>>.from(jsonResponse['data']);
 
-      log('data res $ecodeValue');
-
       httpErrorHandle(
         response: res,
         context: context,
         onSuccess: () {
           for (var i = 0; i < ecodeValue.length; i++) {
-            postList.add(ecodeValue[i]);
+            commentList.add(ecodeValue[i]);
           }
         },
       );
@@ -109,6 +98,47 @@ class PostServices {
       log('error $e');
       showSnackBar(context, e.toString());
     }
-    return postList;
+    return commentList;
+  }
+
+  Future<List<Map<String, dynamic>>> getCommentReply(
+      {required BuildContext context, required String parentCommentId}) async {
+    List<Map<String, dynamic>> replyList = [];
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('authorization');
+
+      Map<String, dynamic> requestData = {
+        "parentCommentId": parentCommentId,
+      };
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/func/comment/getReply'),
+        body: jsonEncode(requestData),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${token!}'
+        },
+      );
+
+      Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+      List<Map<String, dynamic>> ecodeValue =
+          List<Map<String, dynamic>>.from(jsonResponse['data']);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (var i = 0; i < ecodeValue.length; i++) {
+            replyList.add(ecodeValue[i]);
+          }
+        },
+      );
+    } catch (e) {
+      log('error $e');
+      showSnackBar(context, e.toString());
+    }
+    return replyList;
   }
 }

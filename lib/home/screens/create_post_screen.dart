@@ -62,7 +62,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         context: context,
         description: _descriptionController.text,
         userId: userId,
-        stautus: status,
+        status: status,
         images: images,
       );
 

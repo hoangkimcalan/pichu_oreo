@@ -5,12 +5,19 @@ class TextFieldInput extends StatelessWidget {
   final TextInputType textInputType;
   final TextEditingController textEditingController;
   final bool isPass;
+  final Function(String)? onTextChanged;
+  final Color? textColor;
+  final bool isReply;
+
   const TextFieldInput({
     super.key,
     required this.hintText,
     required this.textInputType,
     required this.textEditingController,
     this.isPass = false,
+    this.onTextChanged,
+    this.textColor,
+    this.isReply = false,
   });
 
   @override
@@ -26,6 +33,8 @@ class TextFieldInput extends StatelessWidget {
         borderRadius: BorderRadius.circular(50));
 
     return TextField(
+      autofocus: isReply,
+      style: TextStyle(color: textColor),
       controller: textEditingController,
       decoration: InputDecoration(
         hintText: hintText,
@@ -40,6 +49,7 @@ class TextFieldInput extends StatelessWidget {
       cursorColor: const Color.fromARGB(255, 251, 159, 182),
       cursorWidth: 2,
       cursorHeight: 19,
+      onChanged: onTextChanged,
     );
   }
 }
