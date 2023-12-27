@@ -4,7 +4,7 @@ import 'package:pichu_oreo/home/screens/feed_screen.dart';
 
 const webScreenSize = 600;
 
-String uri = 'http://192.168.1.85:8080';
+String uri = 'http://192.168.1.210:8080';
 
 List<Widget> homeScreenItem = [
   const FeedScreen(),

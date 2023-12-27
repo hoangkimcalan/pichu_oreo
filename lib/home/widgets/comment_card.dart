@@ -234,7 +234,7 @@ class _CommentCardState extends State<CommentCard> {
             padding: const EdgeInsets.only(left: 64),
             child: GestureDetector(
               onTap: () {
-                widget.onButtonClicked("@${widget.snap['poster']['username']} ",
+                widget.onButtonClicked("${widget.snap['poster']['username']}",
                     "${widget.snap['commentId']}", true);
               },
               child: const SizedBox(

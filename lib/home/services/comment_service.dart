@@ -36,7 +36,7 @@ class CommentServices {
       }
 
       Map<String, dynamic> requestData = {
-        "content": "content",
+        "content": content,
         "images": imageUrls,
         "postId": postId,
         "referenceId": referenceId,
@@ -44,7 +44,7 @@ class CommentServices {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('authorization');
 
-      http.Response res = await http.post(
+      await http.post(
         Uri.parse('$uri/api/func/comment/createComment'),
         body: jsonEncode(requestData),
         headers: <String, String>{

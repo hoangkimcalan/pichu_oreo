@@ -111,4 +111,38 @@ class PostServices {
     }
     return postList;
   }
+
+  Future<void> savePost({
+    required BuildContext context,
+    required String postId,
+    required String flag,
+  }) async {
+    try {
+      Map<String, dynamic> requestData = {
+        "postId": postId,
+        "flag": flag,
+      };
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('authorization');
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/func/post/saveOrUnsavePost'),
+        body: jsonEncode(requestData),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${token!}'
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          showSnackBar(context, 'Saved post successfully!');
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }

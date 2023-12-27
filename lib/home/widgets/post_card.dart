@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pichu_oreo/common_widgets/like_animation.dart';
 import 'package:pichu_oreo/home/screens/comment_screen.dart';
 import 'package:pichu_oreo/home/services/react_service.dart';
+import 'package:pichu_oreo/home/widgets/option_post_card.dart';
 import 'package:pichu_oreo/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,15 +28,15 @@ class _PostCardState extends State<PostCard> {
   late int likeCount;
 
   @override
+  void initState() {
+    super.initState();
+    isLikePost = widget.snap['hasReacted'] ?? false;
+    likeCount = widget.snap['likeCounts'] ?? 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
-    @override
-    void initState() {
-      super.initState();
-      isLikePost = widget.snap['hasReacted'];
-      likeCount = widget.snap['likeCount'];
-    }
-
     Future<void> likePost() async {
       try {
         log("Like post...");
@@ -85,7 +86,16 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          // Return the dialog widget
+                          return OptionPostCard(snap: widget.snap['postId']);
+                        },
+                      );
+                    },
                     icon: const Icon(Icons.more_horiz),
                   )
                 ],
@@ -222,6 +232,11 @@ class _PostCardState extends State<PostCard> {
                             setState(() {
                               isLikePost = !isLikePost;
                               log("isReact $isLikePost");
+                              if (isLikePost) {
+                                likeCount++;
+                              } else {
+                                likeCount--;
+                              }
                             });
                           },
                           icon: !isLikePost
@@ -238,7 +253,7 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ),
                       Text(
-                        widget.snap['likeCounts'].toString(),
+                        likeCount.toString(),
                         style: const TextStyle(
                           color: Color(0xFF8d9096),
                           fontSize: 18,
@@ -276,31 +291,17 @@ class _PostCardState extends State<PostCard> {
                       )
                     ],
                   ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: const SizedBox(
-                          child: Icon(
-                            Icons.bookmark_outline,
-                            color: Color(0xFF8d9096),
-                            size: 32,
-                          ),
-                        ),
+                  const SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const SizedBox(
+                      child: Icon(
+                        Icons.share_outlined,
+                        color: Color(0xFF8d9096),
+                        size: 32,
                       ),
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const SizedBox(
-                          child: Icon(
-                            Icons.share_outlined,
-                            color: Color(0xFF8d9096),
-                            size: 32,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                    ),
+                  ),
                 ],
               )
             ],

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:pichu_oreo/auth/services/user_service.dart';
 import 'package:pichu_oreo/common_widgets/text_field_input.dart';
 import 'package:pichu_oreo/home/services/comment_service.dart';
 import 'package:pichu_oreo/home/widgets/comment_card.dart';
@@ -20,6 +21,7 @@ class CommentScreen extends StatefulWidget {
 
 class _CommentScreenState extends State<CommentScreen> {
   final CommentServices commentServices = CommentServices();
+  final UserService userService = UserService();
   final TextEditingController _commentController = TextEditingController();
   String buttonText = 'Hi';
   List<File> images = [];
@@ -31,6 +33,9 @@ class _CommentScreenState extends State<CommentScreen> {
   String textReply = "";
   String commentId = "";
   bool isReply = false;
+
+  String authorCmtRep = "";
+  String idAuthorCmtRep = "";
 
   @override
   void dispose() {
@@ -74,7 +79,8 @@ class _CommentScreenState extends State<CommentScreen> {
         context: context,
         userId: userId,
         postId: postId,
-        content: _commentController.text,
+        content:
+            _commentController.text.replaceAll(authorCmtRep, idAuthorCmtRep),
         referenceId: referenceId,
         images: images,
       );
@@ -143,13 +149,16 @@ class _CommentScreenState extends State<CommentScreen> {
                   Map<String, dynamic> itemPost = _commentList[index];
                   return CommentCard(
                     snap: itemPost,
-                    onButtonClicked: (userTag, commentIdPr, isReplyS) {
+                    onButtonClicked: (userTag, commentIdPr, isReplyS) async {
+                      String userIdTag = await userService.getUserId(
+                          context: context, username: userTag);
                       setState(() {
-                        _commentController.text = userTag;
+                        _commentController.text = "@$userTag ";
                         isReply = isReplyS;
                         commentId = commentIdPr;
+                        authorCmtRep = "@$userTag";
+                        idAuthorCmtRep = "#$userIdTag#";
                       });
-                      log("comment Id $commentId");
                     },
                   );
                 } else {
