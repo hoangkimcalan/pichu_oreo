@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:pichu_oreo/home/screens/edit_profile_screen.dart';
 import 'package:pichu_oreo/home/services/post_service.dart';
 import 'package:pichu_oreo/home/widgets/post_card.dart';
 import 'package:pichu_oreo/providers/user_provider.dart';
@@ -58,6 +59,10 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
+  void navigateToEditProfile() {
+    Navigator.pushNamed(context, EditProfileScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
@@ -113,35 +118,38 @@ class _ProfileScreenState extends State<ProfileScreen>
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: 200,
-                child: Container(
-                  width: 380,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment(0.8, 1),
-                      colors: <Color>[
-                        Color(0xff9796f0),
-                        Color.fromARGB(255, 251, 159, 182),
-                      ],
-                      tileMode: TileMode.mirror,
-                    ),
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        'Edit Profile',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+              InkWell(
+                onTap: navigateToEditProfile,
+                child: SizedBox(
+                  width: 200,
+                  child: Container(
+                    width: 380,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment(0.8, 1),
+                        colors: <Color>[
+                          Color(0xff9796f0),
+                          Color.fromARGB(255, 251, 159, 182),
+                        ],
+                        tileMode: TileMode.mirror,
                       ),
-                    ],
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Edit Profile',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

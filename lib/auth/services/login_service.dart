@@ -107,18 +107,21 @@ class LoginService {
           "username": ecodeValue['username'],
           "email": ecodeValue['email'],
           "roles": ecodeValue['roles'],
-          "avatar": ecodeValue['avatar']
+          "avatar": ecodeValue['avatar'],
+          "firstName": ecodeValue['firstName'],
+          "lastName": ecodeValue['lastName'],
+          "workplace": ecodeValue['workplace'],
+          "address": ecodeValue['address'],
+          "phone": ecodeValue['phone']
         };
 
-        log("AVATAR ${ecodeValue['avatar']}");
+        log("AVATAR $ecodeValue");
 
         String userDataJson = json.encode(userData);
 
         var userProvider = Provider.of<UserProvider>(context, listen: false);
 
         userProvider.setUser(userDataJson);
-
-        log('dataaa $jsonResponse');
       }
     } catch (e) {
       showSnackBar(context, e.toString());

@@ -5,14 +5,14 @@ import 'package:flutter/foundation.dart';
 class User {
   final String id;
   final String username;
-  final String fistName;
-  final String fullName;
+  final String firstName;
+  final String lastName;
   final String email;
   final String phone;
   final String password;
   final String address;
   final String gender;
-  final String workpalace;
+  final String workplace;
   final String avatar;
   final String background;
   late String recipientToken;
@@ -25,14 +25,14 @@ class User {
   User({
     required this.id,
     required this.username,
-    required this.fistName,
-    required this.fullName,
+    required this.firstName,
+    required this.lastName,
     required this.email,
     required this.phone,
     required this.password,
     required this.address,
     required this.gender,
-    required this.workpalace,
+    required this.workplace,
     required this.avatar,
     required this.background,
     required this.recipientToken,
@@ -48,14 +48,14 @@ class User {
 
     result.addAll({'id': id});
     result.addAll({'username': username});
-    result.addAll({'fistName': fistName});
-    result.addAll({'fullName': fullName});
+    result.addAll({'firstName': firstName});
+    result.addAll({'lastName': lastName});
     result.addAll({'email': email});
     result.addAll({'phone': phone});
     result.addAll({'password': password});
     result.addAll({'address': address});
     result.addAll({'gender': gender});
-    result.addAll({'workpalace': workpalace});
+    result.addAll({'workplace': workplace});
     result.addAll({'avatar': avatar});
     result.addAll({'background': background});
     result.addAll({'recipientToken': recipientToken});
@@ -78,14 +78,14 @@ class User {
     return User(
       id: map['id'] ?? '',
       username: map['username'] ?? '',
-      fistName: map['fistName'] ?? '',
-      fullName: map['fullName'] ?? '',
+      firstName: map['firstName'] ?? '',
+      lastName: map['lastName'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'] ?? '',
       password: map['password'] ?? '',
       address: map['address'] ?? '',
       gender: map['gender'] ?? '',
-      workpalace: map['workpalace'] ?? '',
+      workplace: map['workplace'] ?? '',
       avatar: map['avatar'] ?? '',
       background: map['background'] ?? '',
       recipientToken: map['recipientToken'] ?? '',
@@ -109,14 +109,14 @@ class User {
   User copyWith({
     String? id,
     String? username,
-    String? fistName,
-    String? fullName,
+    String? firstName,
+    String? lastName,
     String? email,
     String? phone,
     String? password,
     String? address,
     String? gender,
-    String? workpalace,
+    String? workplace,
     String? avatar,
     String? background,
     String? recipientToken,
@@ -129,14 +129,14 @@ class User {
     return User(
       id: id ?? this.id,
       username: username ?? this.username,
-      fistName: fistName ?? this.fistName,
-      fullName: fullName ?? this.fullName,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       phone: phone ?? this.phone,
       password: password ?? this.password,
       address: address ?? this.address,
       gender: gender ?? this.gender,
-      workpalace: workpalace ?? this.workpalace,
+      workplace: workplace ?? this.workplace,
       avatar: avatar ?? this.avatar,
       background: background ?? this.background,
       recipientToken: recipientToken ?? this.recipientToken,
@@ -151,7 +151,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, fistName: $fistName, fullName: $fullName, email: $email, phone: $phone, password: $password, address: $address, gender: $gender, workpalace: $workpalace, avatar: $avatar, background: $background, recipientToken: $recipientToken, friendList: $friendList, roles: $roles, resetPwToken: $resetPwToken, expiryResetPwTokenDate: $expiryResetPwTokenDate, dateOfBirth: $dateOfBirth)';
+    return 'User(id: $id, username: $username, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, address: $address, gender: $gender, workplace: $workplace, avatar: $avatar, background: $background, recipientToken: $recipientToken, friendList: $friendList, roles: $roles, resetPwToken: $resetPwToken, expiryResetPwTokenDate: $expiryResetPwTokenDate, dateOfBirth: $dateOfBirth)';
   }
 
   @override
@@ -161,14 +161,14 @@ class User {
     return other is User &&
         other.id == id &&
         other.username == username &&
-        other.fistName == fistName &&
-        other.fullName == fullName &&
+        other.firstName == firstName &&
+        other.lastName == lastName &&
         other.email == email &&
         other.phone == phone &&
         other.password == password &&
         other.address == address &&
         other.gender == gender &&
-        other.workpalace == workpalace &&
+        other.workplace == workplace &&
         other.avatar == avatar &&
         other.background == background &&
         other.recipientToken == recipientToken &&
@@ -183,14 +183,14 @@ class User {
   int get hashCode {
     return id.hashCode ^
         username.hashCode ^
-        fistName.hashCode ^
-        fullName.hashCode ^
+        firstName.hashCode ^
+        lastName.hashCode ^
         email.hashCode ^
         phone.hashCode ^
         password.hashCode ^
         address.hashCode ^
         gender.hashCode ^
-        workpalace.hashCode ^
+        workplace.hashCode ^
         avatar.hashCode ^
         background.hashCode ^
         recipientToken.hashCode ^

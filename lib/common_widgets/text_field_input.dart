@@ -8,17 +8,18 @@ class TextFieldInput extends StatelessWidget {
   final Function(String)? onTextChanged;
   final Color? textColor;
   final bool isReply;
+  final String? labelText;
 
-  const TextFieldInput({
-    super.key,
-    required this.hintText,
-    required this.textInputType,
-    required this.textEditingController,
-    this.isPass = false,
-    this.onTextChanged,
-    this.textColor,
-    this.isReply = false,
-  });
+  const TextFieldInput(
+      {super.key,
+      required this.hintText,
+      required this.textInputType,
+      required this.textEditingController,
+      this.isPass = false,
+      this.onTextChanged,
+      this.textColor,
+      this.isReply = false,
+      this.labelText});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class TextFieldInput extends StatelessWidget {
         border: inputBorder,
         focusedBorder: inputBorder,
         enabledBorder: outputBorder,
+        labelText: labelText,
         filled: true,
         contentPadding: const EdgeInsets.all(8),
       ),

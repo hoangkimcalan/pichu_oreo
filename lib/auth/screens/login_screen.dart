@@ -23,6 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushNamed(context, RegisterScreen.routeName);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+  }
+
   void loginUser() {
     setState(() {
       _isLoading = true;
@@ -116,9 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Expanded(
                         child: Divider(
                           indent: 20.0,
