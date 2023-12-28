@@ -94,7 +94,7 @@ class PostServices {
       List<Map<String, dynamic>> ecodeValue =
           List<Map<String, dynamic>>.from(jsonResponse['data']);
 
-      log('data res $ecodeValue');
+      log('data get all posts $ecodeValue');
 
       httpErrorHandle(
         response: res,
@@ -144,5 +144,48 @@ class PostServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getMyPosts(
+      {required BuildContext context, required int page}) async {
+    List<Map<String, dynamic>> postList = [];
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('authorization');
+
+      Map<String, dynamic> requestData = {
+        "page": page,
+      };
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/func/post/getMyPosts'),
+        body: jsonEncode(requestData),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${token!}'
+        },
+      );
+
+      Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+      List<Map<String, dynamic>> ecodeValue =
+          List<Map<String, dynamic>>.from(jsonResponse['data']);
+
+      log('data get my posts $ecodeValue');
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (var i = 0; i < ecodeValue.length; i++) {
+            postList.add(ecodeValue[i]);
+          }
+        },
+      );
+    } catch (e) {
+      log('error $e');
+      showSnackBar(context, e.toString());
+    }
+    return postList;
   }
 }

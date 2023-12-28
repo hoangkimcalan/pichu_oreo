@@ -21,7 +21,6 @@ class _OptionPostCardState extends State<OptionPostCard> {
 
   @override
   Widget build(BuildContext context) {
-    log("SNAP ${widget.snap}");
     return Container(
       height: MediaQuery.of(context).size.height * 1 / 3.2,
       width: double.infinity,

@@ -33,7 +33,7 @@ class LoginService {
     );
 
     Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-    log('data res $jsonResponse');
+    log('data login $jsonResponse');
     Map<String, dynamic> ecodeValue = jsonResponse['data'];
 
     Map<String, dynamic> userData = {
@@ -41,6 +41,7 @@ class LoginService {
       "username": ecodeValue['username'],
       "email": ecodeValue['email'],
       "roles": ecodeValue['roles'],
+      "avatar": ecodeValue['avatar']
     };
 
     String userDataJson = json.encode(userData);

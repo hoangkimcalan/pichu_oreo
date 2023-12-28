@@ -29,7 +29,7 @@ class UserService {
     );
 
     Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-    log('data res $jsonResponse');
+    log('data get user info $jsonResponse');
     Map<String, dynamic> ecodeValue = jsonResponse['data'];
 
     return ecodeValue['id'];

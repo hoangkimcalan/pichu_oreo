@@ -121,9 +121,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
+                  children: [
                     Text(
                       'Save',
                       style: TextStyle(
@@ -231,7 +231,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       border: InputBorder.none,
                                       hintStyle: TextStyle(fontSize: 20),
                                     ),
-                                    maxLines: 12,
+                                    maxLines: 9,
                                   ),
                                   CarouselSlider(
                                     items: images.map((e) {
@@ -296,7 +296,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(fontSize: 20),
                                 ),
-                                maxLines: 23,
+                                maxLines: 18,
                               ),
                       ),
                     ),
