@@ -108,6 +108,7 @@ class _CommentScreenState extends State<CommentScreen> {
         _commentList.addAll(newData);
       });
       log("data new here $_commentList");
+      log("data new here ${_commentList.length}");
     } catch (e) {
       log('Error fetching data: $e');
     }

@@ -138,7 +138,8 @@ class PostServices {
         response: res,
         context: context,
         onSuccess: () {
-          showSnackBar(context, 'Saved post successfully!');
+          showSnackBar(context, 'Save post successfully!');
+          Navigator.of(context).pop();
         },
       );
     } catch (e) {
@@ -171,7 +172,7 @@ class PostServices {
       List<Map<String, dynamic>> ecodeValue =
           List<Map<String, dynamic>>.from(jsonResponse['data']);
 
-      log('data get my posts $ecodeValue');
+      log('data get medias $ecodeValue');
 
       httpErrorHandle(
         response: res,
@@ -187,5 +188,48 @@ class PostServices {
       showSnackBar(context, e.toString());
     }
     return postList;
+  }
+
+  Future<List<Map<String, dynamic>>> getAllImages(
+      {required BuildContext context, required int page}) async {
+    List<Map<String, dynamic>> imageList = [];
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('authorization');
+
+      Map<String, dynamic> requestData = {
+        "page": page,
+      };
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/func/post/getAllImages'),
+        body: jsonEncode(requestData),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${token!}'
+        },
+      );
+
+      Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+      List<Map<String, dynamic>> ecodeValue =
+          List<Map<String, dynamic>>.from(jsonResponse['data']);
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (var i = 0; i < ecodeValue.length; i++) {
+            imageList.add(ecodeValue[i]);
+          }
+        },
+      );
+    } catch (e) {
+      log('error $e');
+      showSnackBar(context, e.toString());
+    }
+    log("IMAGE HERE $imageList");
+
+    return imageList;
   }
 }

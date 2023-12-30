@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:pichu_oreo/auth/services/user_service.dart';
 import 'package:pichu_oreo/home/screens/edit_profile_screen.dart';
 import 'package:pichu_oreo/home/services/post_service.dart';
 import 'package:pichu_oreo/home/widgets/post_card.dart';
@@ -18,6 +19,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin {
   final PostServices postServices = PostServices();
+  final UserService userService = UserService();
   final ScrollController _scrollController = ScrollController();
   List<Map<String, dynamic>> _myPostList = [];
   int _currentPage = 0;
@@ -83,7 +85,30 @@ class _ProfileScreenState extends State<ProfileScreen>
           Padding(
             padding: const EdgeInsets.all(8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return InkWell(
+                        onTap: () => userService.logOut(context),
+                        child: const SizedBox(
+                          height: 68,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                "Log out",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    });
+              },
               child: const SizedBox(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -157,6 +182,20 @@ class _ProfileScreenState extends State<ProfileScreen>
               const Divider(
                 thickness: 1,
                 color: Colors.grey,
+              ),
+              NavigationBar(
+                backgroundColor: mobileBackgroundColor,
+                destinations: const <Widget>[
+                  NavigationDestination(
+                    selectedIcon: Icon(Icons.home),
+                    icon: Icon(Icons.home_outlined),
+                    label: 'Home',
+                  ),
+                  NavigationDestination(
+                    icon: Badge(child: Icon(Icons.notifications_sharp)),
+                    label: 'Saved posts',
+                  ),
+                ],
               ),
               ListView.builder(
                 shrinkWrap: true,

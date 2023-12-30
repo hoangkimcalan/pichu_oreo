@@ -85,6 +85,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
 
+    log("USER AUTH AVA ${user}");
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -153,12 +155,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CircleAvatar(
-                          backgroundImage: AssetImage(
-                            'assets/images/avatar_default.jpg',
-                          ),
-                          backgroundColor: Colors.white,
-                          radius: 28, // set the desired radius
+                        CircleAvatar(
+                          radius: 28,
+                          backgroundImage: NetworkImage(user.avatar),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8),

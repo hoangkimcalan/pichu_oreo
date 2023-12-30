@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pichu_oreo/common_widgets/error_handling.dart';
@@ -33,7 +32,6 @@ class LoginService {
     );
 
     Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-    log('data login $jsonResponse');
     Map<String, dynamic> ecodeValue = jsonResponse['data'];
 
     Map<String, dynamic> userData = {
@@ -45,7 +43,6 @@ class LoginService {
     };
 
     String userDataJson = json.encode(userData);
-    log("res: $userDataJson");
 
     httpErrorHandle(
       response: res,
@@ -85,10 +82,7 @@ class LoginService {
 
       Map<String, dynamic> jsonResponse = jsonDecode(tokenRes.body);
 
-      log("token request ${jsonResponse['ecode']}");
       String response = jsonResponse['ecode'];
-
-      // var response = jsonDecode(tokenRes.body);
 
       if (response == '000') {
         http.Response userRes = await http.get(
@@ -114,8 +108,6 @@ class LoginService {
           "address": ecodeValue['address'],
           "phone": ecodeValue['phone']
         };
-
-        log("AVATAR $ecodeValue");
 
         String userDataJson = json.encode(userData);
 

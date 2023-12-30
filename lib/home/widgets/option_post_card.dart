@@ -16,7 +16,6 @@ class _OptionPostCardState extends State<OptionPostCard> {
 
   void savedPost(String postId, String flag) {
     postServices.savePost(context: context, postId: postId, flag: flag);
-    Navigator.of(context).pop();
   }
 
   @override

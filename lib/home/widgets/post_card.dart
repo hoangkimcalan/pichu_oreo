@@ -37,6 +37,9 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+
+    log("FE ${widget.snap['poster']['authorAvatar']}");
+
     Future<void> likePost() async {
       try {
         log("Like post...");
@@ -62,7 +65,8 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   CircleAvatar(
                     radius: 28,
-                    backgroundImage: NetworkImage(user.avatar),
+                    backgroundImage:
+                        NetworkImage(widget.snap['poster']['authorAvatar']),
                   ),
                   Expanded(
                     child: Padding(
