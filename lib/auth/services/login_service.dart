@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pichu_oreo/common_widgets/error_handling.dart';
@@ -57,6 +58,68 @@ class LoginService {
           ResponsiveLayout.routeName,
           (route) => false,
         );
+      },
+    );
+  }
+
+  void sendToken({
+    required BuildContext context,
+    required String email,
+  }) async {
+    Map<String, dynamic> requestData = {
+      "email": email,
+    };
+
+    http.Response res = await http.post(
+      Uri.parse('$uri/api/auth/resetPw'),
+      body: jsonEncode(requestData),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+
+    httpErrorHandle(
+      response: res,
+      context: context,
+      onSuccess: () async {
+        if (jsonResponse['ecode'] == "000") {
+          showSnackBar(context, "Sent token to your email. Please got it ✔");
+        } else {
+          showSnackBar(context, "Oops! Not found your email 😢");
+        }
+      },
+    );
+  }
+
+  void checkToken({
+    required BuildContext context,
+    required String token,
+  }) async {
+    Map<String, dynamic> requestData = {
+      "token": token,
+    };
+
+    http.Response res = await http.put(
+      Uri.parse('$uri/api/auth/resetPw'),
+      body: jsonEncode(requestData),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+
+    httpErrorHandle(
+      response: res,
+      context: context,
+      onSuccess: () async {
+        if (jsonResponse['ecode'] == "000") {
+          showSnackBar(context, "Sent token to your email. Please got it ✔");
+        } else {
+          showSnackBar(context, "Oops! Not found your email 😢");
+        }
       },
     );
   }

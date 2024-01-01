@@ -183,20 +183,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                 thickness: 1,
                 color: Colors.grey,
               ),
-              NavigationBar(
-                backgroundColor: mobileBackgroundColor,
-                destinations: const <Widget>[
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.home),
-                    icon: Icon(Icons.home_outlined),
-                    label: 'Home',
-                  ),
-                  NavigationDestination(
-                    icon: Badge(child: Icon(Icons.notifications_sharp)),
-                    label: 'Saved posts',
-                  ),
-                ],
-              ),
+              // NavigationBar(
+              //   backgroundColor: mobileBackgroundColor,
+              //   destinations: const <Widget>[
+              //     NavigationDestination(
+              //       selectedIcon: Icon(Icons.home),
+              //       icon: Icon(Icons.home_outlined),
+              //       label: 'Home',
+              //     ),
+              //     NavigationDestination(
+              //       icon: Badge(child: Icon(Icons.notifications_sharp)),
+              //       label: 'Saved posts',
+              //     ),
+              //   ],
+              // ),
               ListView.builder(
                 shrinkWrap: true,
                 controller: _scrollController,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pichu_oreo/auth/screens/register_screen.dart';
+import 'package:pichu_oreo/auth/screens/sendtk_screen.dart';
 import 'package:pichu_oreo/auth/services/login_service.dart';
 import 'package:pichu_oreo/common_widgets/text_field_input.dart';
 import 'package:pichu_oreo/utils/colors.dart';
@@ -21,6 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void navigateToRegister() {
     Navigator.pushNamed(context, RegisterScreen.routeName);
+  }
+
+  void navigateToSendTk() {
+    Navigator.pushNamed(context, SendtkScreen.routeName);
   }
 
   @override
@@ -88,6 +93,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     textInputType: TextInputType.text,
                     textEditingController: _passwordController,
                     isPass: true,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: navigateToSendTk,
+                        child: const Text(
+                          "Forgot password ?",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromARGB(255, 74, 72, 190),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 24),
                   // button login
