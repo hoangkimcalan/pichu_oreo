@@ -147,6 +147,40 @@ class PostServices {
     }
   }
 
+  Future<void> hiddenPost({
+    required BuildContext context,
+    required String postId,
+  }) async {
+    try {
+      Map<String, dynamic> requestData = {
+        "postId": postId,
+      };
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('authorization');
+
+      http.Response res = await http.post(
+        Uri.parse('$uri/api/func/post/hiddenPost'),
+        body: jsonEncode(requestData),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${token!}'
+        },
+      );
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          showSnackBar(context, 'Hidden post successfully!');
+          Navigator.of(context).pop();
+        },
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
   Future<List<Map<String, dynamic>>> getMyPosts(
       {required BuildContext context, required int page}) async {
     List<Map<String, dynamic>> postList = [];

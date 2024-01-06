@@ -4,6 +4,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:pichu_oreo/auth/screens/checktk_screen.dart';
+import 'package:pichu_oreo/auth/screens/login_screen.dart';
+import 'package:pichu_oreo/auth/screens/newpw_screen.dart';
 import 'package:pichu_oreo/common_widgets/error_handling.dart';
 import 'package:pichu_oreo/utils/utils.dart';
 import 'package:pichu_oreo/providers/user_provider.dart';
@@ -86,6 +89,10 @@ class LoginService {
       onSuccess: () async {
         if (jsonResponse['ecode'] == "000") {
           showSnackBar(context, "Sent token to your email. Please got it ✔");
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            CheckTkScreen.routeName,
+            (route) => false,
+          );
         } else {
           showSnackBar(context, "Oops! Not found your email 😢");
         }
@@ -116,9 +123,52 @@ class LoginService {
       context: context,
       onSuccess: () async {
         if (jsonResponse['ecode'] == "000") {
-          showSnackBar(context, "Sent token to your email. Please got it ✔");
+          showSnackBar(context, "Done ✔, Please set new password");
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            NewPwScreen.routeName,
+            (route) => false,
+            arguments: jsonResponse['data'],
+          );
         } else {
-          showSnackBar(context, "Oops! Not found your email 😢");
+          showSnackBar(context, "Oops! Not match your token 😢");
+        }
+      },
+    );
+  }
+
+  void setNewPw({
+    required BuildContext context,
+    required String newPassword,
+    required String email,
+  }) async {
+    Map<String, dynamic> requestData = {
+      "newPassword": newPassword,
+      "email": email,
+    };
+
+    http.Response res = await http.post(
+      Uri.parse('$uri/api/auth/setNewPw'),
+      body: jsonEncode(requestData),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+
+    httpErrorHandle(
+      response: res,
+      context: context,
+      onSuccess: () async {
+        if (jsonResponse['ecode'] == "000") {
+          showSnackBar(context, "Done ✔");
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            LoginScreen.routeName,
+            (route) => false,
+          );
+        } else {
+          showSnackBar(context, "Oops! Some wrongs 😢");
         }
       },
     );

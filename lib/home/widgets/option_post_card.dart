@@ -18,6 +18,10 @@ class _OptionPostCardState extends State<OptionPostCard> {
     postServices.savePost(context: context, postId: postId, flag: flag);
   }
 
+  void hiddenPost(String postId) {
+    postServices.hiddenPost(context: context, postId: postId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,6 +81,7 @@ class _OptionPostCardState extends State<OptionPostCard> {
               ),
               const SizedBox(height: 2),
               GestureDetector(
+                onTap: () => hiddenPost(widget.snap),
                 child: const SizedBox(
                   child: Padding(
                     padding: EdgeInsets.all(8.0),

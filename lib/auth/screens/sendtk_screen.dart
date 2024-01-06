@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pichu_oreo/auth/services/login_service.dart';
 import 'package:pichu_oreo/common_widgets/text_field_input.dart';
+import 'package:pichu_oreo/utils/colors.dart';
 
 class SendtkScreen extends StatefulWidget {
   static const String routeName = '/sendTk-screen';
@@ -34,7 +35,6 @@ class _SendtkScreenState extends State<SendtkScreen> {
     );
 
     setState(() {
-      _isLoading = false;
       _emailController.text = "";
     });
   }
@@ -100,16 +100,22 @@ class _SendtkScreenState extends State<SendtkScreen> {
                         ),
                         borderRadius: BorderRadius.circular(50.0),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
-                            'Send',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                            ),
-                          ),
+                          !_isLoading
+                              ? const Text(
+                                  'Send',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ),
+                                )
+                              : const Center(
+                                  child: CircularProgressIndicator(
+                                    color: primaryColor,
+                                  ),
+                                ),
                         ],
                       ),
                     ),

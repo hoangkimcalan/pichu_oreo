@@ -1,46 +1,55 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pichu_oreo/auth/services/login_service.dart';
 import 'package:pichu_oreo/common_widgets/text_field_input.dart';
 
-class CheckTkScreen extends StatefulWidget {
-  static const String routeName = '/checkTk-screen';
+class NewPwScreen extends StatefulWidget {
+  static const String routeName = '/newPw-screen';
 
-  const CheckTkScreen({super.key});
+  const NewPwScreen({super.key});
 
   @override
-  State<CheckTkScreen> createState() => _CheckTkScreenState();
+  State<NewPwScreen> createState() => _NewPwScreenState();
 }
 
-class _CheckTkScreenState extends State<CheckTkScreen> {
-  final TextEditingController _tokenController = TextEditingController();
-  bool _isLoading = false;
+class _NewPwScreenState extends State<NewPwScreen> {
+  final TextEditingController _newPwController = TextEditingController();
   final LoginService loginService = LoginService();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
-    _tokenController.dispose();
+    _newPwController.dispose();
   }
 
-  void sendTokenReset() {
+  void sendTokenReset(String email) {
     setState(() {
       _isLoading = true;
     });
 
-    loginService.checkToken(
+    loginService.setNewPw(
       context: context,
-      token: _tokenController.text,
+      newPassword: _newPwController.text,
+      email: email,
     );
 
     setState(() {
       _isLoading = false;
-      _tokenController.text = "";
+      _newPwController.text = "";
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    ModalRoute<dynamic>? route = ModalRoute.of(context);
+
+    final String? arguments = route?.settings.arguments as String?;
+
+    log("GMAIL $arguments");
+
     return Container(
       color: const Color(0xFFFDF6F7),
       child: Scaffold(
@@ -78,13 +87,13 @@ class _CheckTkScreenState extends State<CheckTkScreen> {
                   ),
                   const SizedBox(height: 32),
                   TextFieldInput(
-                    hintText: 'Enter your token',
+                    hintText: 'Enter your new password',
                     textInputType: TextInputType.text,
-                    textEditingController: _tokenController,
+                    textEditingController: _newPwController,
                   ),
                   const SizedBox(height: 24),
                   InkWell(
-                    onTap: sendTokenReset,
+                    onTap: () => sendTokenReset(arguments!),
                     child: Container(
                       width: 380,
                       height: 50,

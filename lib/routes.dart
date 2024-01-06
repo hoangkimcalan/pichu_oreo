@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pichu_oreo/auth/screens/checktk_screen.dart';
 import 'package:pichu_oreo/auth/screens/login_screen.dart';
+import 'package:pichu_oreo/auth/screens/newpw_screen.dart';
 import 'package:pichu_oreo/auth/screens/register_screen.dart';
 import 'package:pichu_oreo/auth/screens/sendtk_screen.dart';
 import 'package:pichu_oreo/home/screens/edit_profile_screen.dart';
@@ -40,6 +42,18 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const SendtkScreen(),
+      );
+
+    case CheckTkScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const CheckTkScreen(),
+      );
+
+    case NewPwScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const NewPwScreen(),
       );
 
     default:
